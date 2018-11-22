@@ -6,11 +6,11 @@
 # Resource group info Output
 
 output "ResourceGroupInfraName" {
-  value = "${module.ResourceGroupInfra.Name}"
+  value = "${module.ResourceGroup.Name}"
 }
 
 output "ResourceGroupInfraId" {
-  value = "${module.ResourceGroupInfra.Id}"
+  value = "${module.ResourceGroup.Id}"
 }
 
 ######################################################
@@ -184,26 +184,4 @@ output "GW_SubnetAddressPrefix" {
 }
 
 
-######################################################
-#Created Azure Keyvault
 
-output "MSExpKeyVaultId" {
-  value = "${module.MSExpKeyVault.Id}"
-}
-
-output "MSExpKeyVaulturi" {
-  value = "${module.MSExpKeyVault.URI}"
-}
-
-output "MSExpKeyVaultsku" {
-  value = "${module.MSExpKeyVault.SKU}"
-}
-
-
-output "MSExpKeyVault_enabled_for_disk_encryption" {
-  value = "${module.MSExpKeyVault.KeyVault_enabled_for_disk_encryption}"
-}
-
-output "MSExpKeyVault_enabled_for_template_deployment" {
-  value = "${module.MSExpKeyVault.KeyVault_enabled_for_template_deployment}"
-}
