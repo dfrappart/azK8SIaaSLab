@@ -2,7 +2,21 @@
 #This file creates K8S Nodes
 ##############################################################
 
+#Nodes public IP Creation
 
+module "NodesPublicIP" {
+  #Module source
+  #source = "./Modules/10 PublicIP"
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//10 PublicIP"
+
+  #Module variables
+  PublicIPCount       = "1"
+  PublicIPName        = "nodepip"
+  PublicIPLocation    = "${var.AzureRegion}"
+  RGName              = "${module.ResourceGroup.Name}"
+  EnvironmentTag      = "${var.EnvironmentTag}"
+  EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
+}
 
 #Availability set creation
 
@@ -10,7 +24,7 @@ module "AS_K8SNodes" {
   #Module source
 
   #source = "./Modules/13 AvailabilitySet"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//13 AvailabilitySet"
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//13 AvailabilitySet"
 
   #Module variables
   ASName              = "AS_K8SNodes"
@@ -26,7 +40,7 @@ module "NICs_K8SNodes" {
   #module source
 
   #source = "./Modules/09 NICWithoutPIPWithCount"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//09 NICWithoutPIPWithCount"
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//12-2 NICWithoutPIPWithCount"
 
   #Module variables
 
@@ -37,6 +51,7 @@ module "NICs_K8SNodes" {
   SubnetId            = "${module.FE_Subnet.Id}"
   EnvironmentTag      = "${var.EnvironmentTag}"
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
+  IsLoadBalanced      = "1"
 }
 
 
@@ -46,7 +61,7 @@ module "DataDisks_K8SNodes" {
   #Module source
 
   #source = "./Modules/06 ManagedDiskswithcount"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//06 ManagedDiskswithcount"
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//11 ManagedDiskswithcount"
 
   #Module variables
 

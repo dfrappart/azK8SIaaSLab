@@ -9,7 +9,7 @@
 module "BastionPublicIP" {
   #Module source
   #source = "./Modules/10 PublicIP"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//10 PublicIP"
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//10 PublicIP"
 
   #Module variables
   PublicIPCount       = "1"
@@ -26,7 +26,7 @@ module "AS_Bastion" {
   #Module source
 
   #source = "./Modules/13 AvailabilitySet"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//13 AvailabilitySet"
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//13 AvailabilitySet"
 
   #Module variables
   ASName              = "AS_Bastion"
@@ -42,7 +42,7 @@ module "NICs_Bastion" {
   #module source
 
   #source = "./Modules/12 NICwithPIPWithCount"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//12 NICwithPIPWithCount"
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//12 NICwithPIPWithCount"
 
   #Module variables
 
@@ -62,7 +62,7 @@ module "DataDisks_Bastion" {
   #Module source
 
   #source = "./Modules/06 ManagedDiskswithcount"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//06 ManagedDiskswithcount"
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//11 ManagedDiskswithcount"
 
   #Module variables
 
@@ -83,7 +83,7 @@ module "VMs_Bastion" {
   #module source
 
   #source = "./Modules/14 LinuxVMWithCount"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//14 LinuxVMWithCount"
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//14 - 2 LinuxVMWithCountwithCustomData"
 
   #Module variables
 
@@ -104,7 +104,7 @@ module "VMs_Bastion" {
   VMOffer           = "${lookup(var.Offer, 2)}"
   VMsku             = "${lookup(var.sku, 2)}"
   DiagnosticDiskURI = "${module.DiagStorageAccount.PrimaryBlobEP}"
-  #BootConfigScriptFileName    = "deployansible.sh"
+  CloudinitscriptPath    = "./Scripts/baseline.sh"
   PublicSSHKey        = "${var.AzurePublicSSHKey}"
   EnvironmentTag      = "${var.EnvironmentTag}"
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"

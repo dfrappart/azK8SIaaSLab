@@ -10,7 +10,7 @@ module "AS_K8SMasters" {
   #Module source
 
   #source = "./Modules/13 AvailabilitySet"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//13 AvailabilitySet"
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//13 AvailabilitySet"
 
   #Module variables
   ASName              = "AS_K8SMasters"
@@ -26,7 +26,7 @@ module "NICs_K8SMasters" {
   #module source
 
   #source = "./Modules/09 NICWithoutPIPWithCount"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//09 NICWithoutPIPWithCount"
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//12-2 NICWithoutPIPWithCount"
 
   #Module variables
 
@@ -46,7 +46,7 @@ module "DataDisks_K8SMasters" {
   #Module source
 
   #source = "./Modules/06 ManagedDiskswithcount"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//06 ManagedDiskswithcount"
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//11 ManagedDiskswithcount"
 
   #Module variables
 
