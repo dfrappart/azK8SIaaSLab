@@ -42,7 +42,7 @@ module "NICs_Bastion" {
   #module source
 
   #source = "./Modules/12 NICwithPIPWithCount"
-  source = "github.com/dfrappart/Terra-AZModuletest//Modules//12 NICwithPIPWithCount"
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//12-1 NICwithPIPWithCount"
 
   #Module variables
 

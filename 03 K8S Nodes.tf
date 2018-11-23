@@ -2,6 +2,62 @@
 #This file creates K8S Nodes
 ##############################################################
 
+#LB K8S Creation
+
+module "K8SLB" {
+
+  #Module source
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//37 ExternalLB Standalone"
+
+  #Module variables
+  ExtLBName           = "k8slb"
+  AzureRegion         = "${var.AzureRegion}"
+  FEConfigName        = "k8slbconfig"
+  PublicIPId          = "${module.NodesPublicIP.Id}"
+  RGName              = "${module.ResourceGroup.Name}"
+  EnvironmentTag      = "${var.EnvironmentTag}"
+  EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
+}
+
+module "K8SLBBE" {
+
+  #Module source
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//38 BackEndPool"
+
+  #Module variables
+  LBBackEndPoolName = "k8slbbe"
+  RGName            = "${var.AzureRegion}"
+  LBId              = "${module.K8SLB.Id}"
+
+}
+
+module "K8SLBProbe" {
+
+  #Module source
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//39 HealthProbe"
+
+  #Module variables
+  LBProbeName       = "k8slbbe"
+  RGName            = "${var.AzureRegion}"
+  LBId              = "${module.K8SLB.Id}"
+  LBProbePort       = "80"
+  
+}
+
+module "K8SLBRule" {
+
+  #Module source
+  source = "github.com/dfrappart/Terra-AZModuletest//Modules//40 LBRule"
+
+  #Module variables
+  FERuleName     = "k8slbrule"
+  RGName         = "${var.AzureRegion}"
+  LBId           = "${module.K8SLB.Id}"
+  LBProbId       = "${module.K8SLBProbe.Id}"
+
+}
+
+
 #Nodes public IP Creation
 
 module "NodesPublicIP" {
@@ -86,24 +142,25 @@ module "VMs_K8SNodes" {
 
   #Module variables
 
-  VMCount           = "2"
-  VMName            = "K8SNode"
-  VMLocation        = "${var.AzureRegion}"
-  VMRG              = "${module.ResourceGroup.Name}"
-  VMNICid           = ["${module.NICs_K8SNodes.Ids}"]
-  VMSize            = "${lookup(var.VMSize, 1)}"
-  ASID              = "${module.AS_K8SNodes.Id}"
-  VMStorageTier     = "${lookup(var.Manageddiskstoragetier, 0)}"
-  VMAdminName       = "${var.VMAdminName}"
-  VMAdminPassword   = "${var.VMAdminPassword}"
-  DataDiskId        = ["${module.DataDisks_K8SNodes.Ids}"]
-  DataDiskName      = ["${module.DataDisks_K8SNodes.Names}"]
-  DataDiskSize      = ["${module.DataDisks_K8SNodes.Sizes}"]
-  VMPublisherName   = "${lookup(var.PublisherName, 2)}"
-  VMOffer           = "${lookup(var.Offer, 2)}"
-  VMsku             = "${lookup(var.sku, 2)}"
-  DiagnosticDiskURI = "${module.DiagStorageAccount.PrimaryBlobEP}"
-  CloudinitscriptPath    = "./Scripts/baseline.sh"
+  VMCount             = "2"
+  VMName              = "K8SNode"
+  VMLocation          = "${var.AzureRegion}"
+  VMRG                = "${module.ResourceGroup.Name}"
+  VMNICid             = ["${module.NICs_K8SNodes.Ids}"]
+  VMSize              = "${lookup(var.VMSize, 1)}"
+  ASID                = "${module.AS_K8SNodes.Id}"
+  VMStorageTier       = "${lookup(var.Manageddiskstoragetier, 0)}"
+  VMAdminName         = "${var.VMAdminName}"
+  VMAdminPassword     = "${var.VMAdminPassword}"
+  DataDiskId          = ["${module.DataDisks_K8SNodes.Ids}"]
+  DataDiskName        = ["${module.DataDisks_K8SNodes.Names}"]
+  DataDiskSize        = ["${module.DataDisks_K8SNodes.Sizes}"]
+  VMPublisherName     = "${lookup(var.PublisherName, 2)}"
+  VMOffer             = "${lookup(var.Offer, 2)}"
+  VMsku               = "${lookup(var.sku, 2)}"
+  DiagnosticDiskURI   = "${module.DiagStorageAccount.PrimaryBlobEP}"
+  CloudinitscriptPath = "./Scripts/Kubadminit.sh"
+  LBBackEndPoolid     = "${module.K8SLBBEPool.Id}"
   PublicSSHKey        = "${var.AzurePublicSSHKey}"
   EnvironmentTag      = "${var.EnvironmentTag}"
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"

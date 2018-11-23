@@ -88,7 +88,7 @@ module "VMs_K8SMasters" {
   VMOffer           = "${lookup(var.Offer, 2)}"
   VMsku             = "${lookup(var.sku, 2)}"
   DiagnosticDiskURI = "${module.DiagStorageAccount.PrimaryBlobEP}"
-  CloudinitscriptPath    = "./Scripts/baseline.sh"
+  CloudinitscriptPath    = "./Scripts/Kubadminit.sh"
   PublicSSHKey        = "${var.AzurePublicSSHKey}"
   EnvironmentTag      = "${var.EnvironmentTag}"
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
