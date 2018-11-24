@@ -13,7 +13,7 @@ module "K8SLB" {
   ExtLBName           = "k8slb"
   AzureRegion         = "${var.AzureRegion}"
   FEConfigName        = "k8slbconfig"
-  PublicIPId          = "${module.NodesPublicIP.Id}"
+  PublicIPId          = "${element(module.NodesPublicIP.Ids,0)}"
   RGName              = "${module.ResourceGroup.Name}"
   EnvironmentTag      = "${var.EnvironmentTag}"
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
@@ -54,6 +54,8 @@ module "K8SLBRule" {
   RGName         = "${var.AzureRegion}"
   LBId           = "${module.K8SLB.Id}"
   LBProbId       = "${module.K8SLBProbe.Id}"
+  BEPoolId       = "${module.K8SLBBE.Id}"
+  FEConfigName   = "k8slbconfig"
 
 }
 
@@ -108,6 +110,7 @@ module "NICs_K8SNodes" {
   EnvironmentTag      = "${var.EnvironmentTag}"
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
   IsLoadBalanced      = "1"
+  LBBackEndPoolid     = ["${module.K8SLBBE.Id}","${module.K8SLBBE.Id}"]
 }
 
 
@@ -146,7 +149,7 @@ module "VMs_K8SNodes" {
   VMName              = "K8SNode"
   VMLocation          = "${var.AzureRegion}"
   VMRG                = "${module.ResourceGroup.Name}"
-  VMNICid             = ["${module.NICs_K8SNodes.Ids}"]
+  VMNICid             = ["${module.NICs_K8SNodes.LBIds}"]
   VMSize              = "${lookup(var.VMSize, 1)}"
   ASID                = "${module.AS_K8SNodes.Id}"
   VMStorageTier       = "${lookup(var.Manageddiskstoragetier, 0)}"
@@ -160,7 +163,6 @@ module "VMs_K8SNodes" {
   VMsku               = "${lookup(var.sku, 2)}"
   DiagnosticDiskURI   = "${module.DiagStorageAccount.PrimaryBlobEP}"
   CloudinitscriptPath = "./Scripts/Kubadminit.sh"
-  LBBackEndPoolid     = "${module.K8SLBBEPool.Id}"
   PublicSSHKey        = "${var.AzurePublicSSHKey}"
   EnvironmentTag      = "${var.EnvironmentTag}"
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
